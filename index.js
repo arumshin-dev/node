@@ -1,2 +1,1 @@
-//nodejs 변경
-console.log("Hey, I'm a Node.js script!");
+const Discord = require("discord.js");
