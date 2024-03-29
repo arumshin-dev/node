@@ -1,4 +1,5 @@
 // Require the necessary discord.js classes
+const keep_alive = require("./keep_alive.js");
 const { Client, Events, GatewayIntentBits } = require('discord.js');
 
 // const { Client, GatewayIntentBits } = require("discord.js");
