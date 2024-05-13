@@ -1,44 +1,31 @@
-// Require the necessary discord.js classes
-const keep_alive = require("./keep_alive.js");
-const { Client, Events, GatewayIntentBits } = require('discord.js');
+const express = require('express');
+const path = require('path');
+const app = express();
 
-// const { Client, GatewayIntentBits } = require("discord.js");
+// app.use(express.static('public'));
+// 정적 파일 제공을 위한 middleware 설정
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Create a new client instance
-// Intents를 GatewayIntentBits를 사용하여 지정
-const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
+// 기본 경로("/")로 접속했을 때 index.html 제공
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-const token = process.env.DISCORD_BOT_SECRET;
-
-// When the client is ready, run this code (only once).
-// The distinction between `client: Client<boolean>` and `readyClient: Client<true>` is important for TypeScript developers.
-// It makes some properties non-nullable.
-client.once(Events.ClientReady, readyClient => {
-  console.log(`${client.user.username} is Ready! Logged in as ${readyClient.user.tag}`);
-  // 봇이 속한 모든 채널에 메시지 보내기
-  client.channels.cache.forEach(channel => {
-    console.log('❗channel',channel);
-    if (channel.type === 0) { // 텍스트 채널인 경우에만
-      channel.send(`안녕하세요! ${client.user.username}이(가) ${channel.name} 채널에 온라인 상태입니다.${new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}`)
-        .then(() => console.log(`메시지가 ${channel.name} 채널에 성공적으로 전송되었습니다.`))
-        .catch(error => console.error(`메시지를 ${channel.name} 채널에 전송하는 중 오류가 발생했습니다:`, error));
-    }
-  });
+app.get('/processData', (req, res) => {
+  // 클라이언트로부터의 요청을 처리하는 로직
+  console.log("데이터 처리 중...");
+  res.send("데이터가 처리되었습니다.");
 });
 
-client.on('messageCreate', (msg) => {
-  //봇체크
-  if (msg.author.bot) return;
-  if (msg.author.id !== client.user.id) {
-    //console.log("msg", msg);
-    msg.channel.send(msg.content.split('').reverse().join(''));
-  }
+// app.listen(3000, () => {
+//   console.log('서버가 포트 3000에서 실행 중입니다.');
+// });
+// 서버 실행
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`서버가 포트 ${PORT}에서 실행 중입니다.`);
 });
 
-// Log in to Discord with your client's token
-client.login(token);
 
 
 

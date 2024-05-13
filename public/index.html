@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>버튼을 눌러 데이터 처리</title>
+</head>
+<body>
+  <button id="processButton">데이터 처리하기</button>
+
+  <script>
+    const processButton = document.getElementById('processButton');
+    processButton.addEventListener('click', () => {
+      fetch('/processData')
+        .then(response => response.text())
+        .then(data => {
+          console.log(data); // 서버로부터 받은 응답 로그에 출력
+          alert(data); // 서버로부터 받은 응답을 알림창에 표시
+        })
+        .catch(error => console.error('에러 발생:', error));
+    });
+  </script>
+</body>
+</html>
