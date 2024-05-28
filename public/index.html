@@ -5,6 +5,7 @@
 </head>
 <body>
   <button id="processButton">데이터 처리하기</button>
+  <button id="startDiscordRobotButton">디스코드 로봇 켜기</button>
 
   <script>
     const processButton = document.getElementById('processButton');
@@ -14,6 +15,18 @@
         .then(data => {
           console.log(data); // 서버로부터 받은 응답 로그에 출력
           alert(data); // 서버로부터 받은 응답을 알림창에 표시
+        })
+        .catch(error => console.error('에러 발생:', error));
+    });
+    const startDiscordRobotButton = document.getElementById('startDiscordRobotButton');
+      startDiscordRobotButton.addEventListener('click', () => {
+      fetch('/startDiscordRobot')
+        .then(response => {
+          if (response.ok) {
+            alert('로봇이 켜졌습니다.');
+          } else {
+            alert('로봇을 켜는 데 문제가 발생했습니다.');
+          }
         })
         .catch(error => console.error('에러 발생:', error));
     });
